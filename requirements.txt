@@ -1,0 +1,8 @@
+streamlit==1.66.0
+pandas==3.0.6
+openpyxl==3.1.5
+SQLAlchemy==2.1.5
+psycopg[binary]>=3.2   # Postgres driver, only used when AUDIT_DATABASE_URL is a postgres URL
+gspread==6.2.1
+google-auth==2.62.0
+pytest==9.1.1          # dev only

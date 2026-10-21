@@ -1,0 +1,21 @@
+# Secrets - never commit
+.env
+.streamlit/secrets.toml
+credentials/
+*.json.key
+service_account*.json
+
+# Submissions must never live in Git
+*.db
+*.sqlite
+*.sqlite3
+data/
+samples/exports/*.xlsx
+!samples/exports/SAMPLE_*.xlsx
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store

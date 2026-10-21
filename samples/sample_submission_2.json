@@ -1,0 +1,34 @@
+{
+  "_note": "FICTIONAL TEST DATA. Process-only, deliberately partial (tests blanks and 'Other'). No player data.",
+  "submitter": "Test User B (fictional)",
+  "submitter_role": "Head Physiotherapist (test)",
+  "answers": {
+    "report_inventory": [
+      {"report_name": "Rehab Progress Board", "report_type": "Rehab / return-to-play progress report", "owner": "Head Physiotherapist", "reviewer": "Team Doctor", "audience": "Medical staff", "source": "Manual entry (Excel)", "format": "XLSX / XLSM", "cadence": "Weekly", "deadline": "Monday 12:00", "storage": "Medical shared drive / Rehab", "access_level": "Medical staff only", "direction": "Created + updated", "notes": ""},
+      {"report_name": "Away-trip Kit Checklist", "report_type": "Other", "owner": "Physiotherapist", "reviewer": "", "audience": "Medical staff", "source": "Manual entry (paper)", "format": "Paper", "cadence": "Match day", "deadline": "Day before travel", "storage": "Medical room folder", "access_level": "Medical staff only", "direction": "Created", "notes": "Other = logistics checklist, no player data"}
+    ],
+    "roles": [
+      {"role": "Physiotherapist", "person": "Head Physiotherapist", "deputy": "Physiotherapist 2", "responsibilities": "Rehab board", "notes": ""}
+    ],
+    "unique_vs_events": {"choice": "Not defined / varies", "detail": ""},
+    "ampm_counting": {"choice": null, "detail": ""},
+    "rpe_scale": {"choice": "Other", "detail": "Not sure which scale the app uses; sports scientist would know."},
+    "load_metrics": {"choices": ["Other"], "other": "Not owned by physio team"},
+    "channels": {"choices": ["Printed copies", "Other"], "other": "Whiteboard in the medical room"},
+    "doctor_input_status": {"choice": "Unsure", "detail": ""},
+    "access_matrix": [
+      {"audience": "Medical staff", "access": "Full clinical detail", "channel": "", "notes": ""},
+      {"audience": "Performance / S&C staff", "access": "", "channel": "", "notes": ""},
+      {"audience": "Head coach", "access": "", "channel": "", "notes": ""},
+      {"audience": "Assistant coaches / analysts", "access": "", "channel": "", "notes": ""},
+      {"audience": "Sporting director", "access": "Other", "channel": "", "notes": "Should be agreed with the Head of Medical"},
+      {"audience": "Club management / CEO", "access": "", "channel": "", "notes": ""},
+      {"audience": "Team manager / administration", "access": "", "channel": "", "notes": ""},
+      {"audience": "External (league, federation, insurer)", "access": "", "channel": "", "notes": ""}
+    ],
+    "hours_per_week": null,
+    "pain_points": "Whiteboard and spreadsheet are kept in parallel.",
+    "signoff_owner": "",
+    "final_comments": "Test submission 2 - fictional, partial."
+  }
+}
