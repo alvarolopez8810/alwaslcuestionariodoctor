@@ -24,8 +24,8 @@ st.set_page_config(page_title="Daily Report Discovery · Al Wasl FC", page_icon=
 st.markdown(
     """
     <style>
-      .block-container {max-width: 1200px; padding-top: 2rem;}
-      .audit-title {color:#0B4C44; font-weight:700; font-size:1.7rem; margin-bottom:0;}
+      .block-container {max-width: 1200px; padding-top: 4.5rem;}
+      .audit-title {color:#0B4C44; font-weight:700; font-size:1.7rem; line-height:1.3; margin-bottom:0;}
       .audit-sub {color:#6b6b63; margin-top:0.1rem;}
       .privacy {border-left:5px solid #DAB344; background:#FBF6E6; padding:0.9rem 1.1rem;
                 border-radius:6px; margin:0.6rem 0 1.2rem 0; color:#2b2b2b;}
