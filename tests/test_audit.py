@@ -24,7 +24,7 @@ def test_question_ids_unique_and_tables_defined():
     for _, q in iter_questions():
         if q["type"] == "table":
             assert q["id"] in TABLES
-    assert len(SECTIONS) == 9
+    assert len(SECTIONS) == 8
 
 
 @pytest.mark.parametrize("text", ["VAS 7 after training", "RPE: 8", "hamstring strain", "ACL",

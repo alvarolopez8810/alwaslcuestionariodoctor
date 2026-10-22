@@ -272,21 +272,6 @@ SECTIONS = [
                       "improve the report the most?"},
         ],
     },
-    {
-        "id": "s9",
-        "title": "9. Prototype feedback",
-        "intro": "We will build a first dashboard prototype from one sample report.",
-        "questions": [
-            {"id": "prototype_reviewers", "type": "multi",
-             "label": "Who should review the first dashboard prototype?",
-             "options": ["Doctor", "Physiotherapist", "Physical coach", "Head coach",
-                         "Assistant coach", OTHER]},
-            {"id": "prototype_reviewer_names", "type": "text",
-             "label": "Names and positions of the reviewers"},
-            {"id": "prototype_note", "type": "text",
-             "label": "Optional comment (e.g. best time for a 20-minute review)"},
-        ],
-    },
 ]
 
 PHASES = [

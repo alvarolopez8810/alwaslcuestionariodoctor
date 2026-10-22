@@ -37,7 +37,6 @@ This app is **independent** of the live Doctor Input Dash app
 | 6 | Counts and definitions | Which need to be clearer (attendance, availability, rehab...) |
 | 7 | Storage and sharing | Choices + optional comment |
 | 8 | Biggest improvement | One change |
-| 9 | Prototype feedback | Who should review the first prototype |
 
 Options are **suggestions only**: nothing is preselected, and choice lists
 include **Other** with a free-text field. The form is defined in

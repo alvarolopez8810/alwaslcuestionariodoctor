@@ -172,16 +172,6 @@
     },
     "storage_note": "No single agreed folder yet.",
     "one_change": "Enter availability once and have the daily PDF and the weekly summary built from it.",
-    "prototype_reviewers": {
-      "choices": [
-        "Doctor",
-        "Physical coach",
-        "Head coach"
-      ],
-      "other": ""
-    },
-    "prototype_note": "After training on a non-match day. Test submission 1 - fictional.",
-    "info_providers_names": "Sam Example (Team Doctor), Jo Sample (Physiotherapist), Lee Demo (Sports Scientist)",
-    "prototype_reviewer_names": "Sam Example (Team Doctor), Kim Placeholder (Physical Coach), Head Coach"
+    "info_providers_names": "Sam Example (Team Doctor), Jo Sample (Physiotherapist), Lee Demo (Sports Scientist)"
   }
 }
