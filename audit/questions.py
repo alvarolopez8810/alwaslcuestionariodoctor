@@ -105,8 +105,8 @@ TABLES = {
         "columns": [
             ("report_name", "Report name", "text", None),
             ("report_type", "Report type", "select", REPORT_TYPE_SUGGESTIONS),
-            ("owner", "Owner (role or staff name)", "text", None),
-            ("reviewer", "Reviewer", "text", None),
+            ("owner", "Owner (name and position)", "text", None),
+            ("reviewer", "Reviewer (name and position)", "text", None),
             ("audience", "Audience / recipients", "text", None),
             ("source", "Source system", "select", SOURCE_SUGGESTIONS),
             ("format", "File format", "select", FORMAT_SUGGESTIONS),
@@ -123,8 +123,8 @@ TABLES = {
     "roles": {
         "columns": [
             ("role", "Role / function", "select", ROLE_SUGGESTIONS),
-            ("person", "Person (staff name or job title)", "text", None),
-            ("deputy", "Deputy / cover", "text", None),
+            ("person", "Name", "text", None),
+            ("deputy", "Deputy / cover (name and position)", "text", None),
             ("responsibilities", "Reporting responsibilities", "text", None),
             ("notes", "Notes (incl. detail for 'Other')", "text", None),
         ],
@@ -181,10 +181,12 @@ SECTIONS = [
         "questions": [
             {"id": "info_providers", "type": "multi",
              "label": "Who provides the information?", "options": STAFF_GROUPS},
+            {"id": "info_providers_names", "type": "text",
+             "label": "Names and positions of the people who provide it"},
             {"id": "report_preparer", "type": "text",
-             "label": "Who prepares the daily report? (role)"},
+             "label": "Who prepares the daily report? (name and position)"},
             {"id": "report_reviewer", "type": "text",
-             "label": "Who reviews it before it is shared? (role, or 'nobody')"},
+             "label": "Who reviews it before it is shared? (name and position, or 'nobody')"},
         ],
     },
     {
@@ -279,6 +281,8 @@ SECTIONS = [
              "label": "Who should review the first dashboard prototype?",
              "options": ["Doctor", "Physiotherapist", "Physical coach", "Head coach",
                          "Assistant coach", OTHER]},
+            {"id": "prototype_reviewer_names", "type": "text",
+             "label": "Names and positions of the reviewers"},
             {"id": "prototype_note", "type": "text",
              "label": "Optional comment (e.g. best time for a 20-minute review)"},
         ],

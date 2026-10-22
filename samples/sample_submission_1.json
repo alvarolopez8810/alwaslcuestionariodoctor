@@ -7,7 +7,7 @@
       {
         "report_name": "Daily Availability",
         "report_type": "Daily availability report",
-        "owner": "Team Doctor",
+        "owner": "Sam Example - Team Doctor",
         "reviewer": "Head Physiotherapist",
         "audience": "Head coach, sporting director",
         "source": "Doctor Input app / Google Sheet",
@@ -22,7 +22,7 @@
       {
         "report_name": "Training Load Summary",
         "report_type": "Training load / GPS report",
-        "owner": "Sports Scientist",
+        "owner": "Lee Demo - Sports Scientist",
         "reviewer": "Head of Performance",
         "audience": "Coaching staff",
         "source": "GPS / tracking system",
@@ -37,7 +37,7 @@
       {
         "report_name": "Wellness Morning Summary",
         "report_type": "Wellness / readiness questionnaire summary",
-        "owner": "Sports Scientist",
+        "owner": "Lee Demo - Sports Scientist",
         "reviewer": "Team Doctor",
         "audience": "Medical + performance staff",
         "source": "Wellness / RPE app",
@@ -52,7 +52,7 @@
       {
         "report_name": "Doctor Input workbook",
         "report_type": "Doctor Input workbook",
-        "owner": "Team Doctor",
+        "owner": "Sam Example - Team Doctor",
         "reviewer": "",
         "audience": "Medical staff",
         "source": "Manual entry (Excel)",
@@ -67,7 +67,7 @@
       {
         "report_name": "Weekly Medical Summary",
         "report_type": "Weekly medical summary",
-        "owner": "Team Doctor",
+        "owner": "Sam Example - Team Doctor",
         "reviewer": "Head of Medical",
         "audience": "Sporting director",
         "source": "Manual entry (Excel)",
@@ -115,8 +115,8 @@
       ],
       "other": ""
     },
-    "report_preparer": "Sports scientist",
-    "report_reviewer": "Team Doctor",
+    "report_preparer": "Lee Demo - Sports Scientist",
+    "report_reviewer": "Sam Example - Team Doctor",
     "entry_time": {
       "choice": "Before the morning session",
       "detail": "Physio updates by 08:45."
@@ -180,6 +180,8 @@
       ],
       "other": ""
     },
-    "prototype_note": "After training on a non-match day. Test submission 1 - fictional."
+    "prototype_note": "After training on a non-match day. Test submission 1 - fictional.",
+    "info_providers_names": "Sam Example (Team Doctor), Jo Sample (Physiotherapist), Lee Demo (Sports Scientist)",
+    "prototype_reviewer_names": "Sam Example (Team Doctor), Kim Placeholder (Physical Coach), Head Coach"
   }
 }

@@ -13,8 +13,8 @@ import re
 PRIVACY_NOTICE = (
     "**About how we work, not about players.** Please do not enter player names, "
     "diagnoses, injury details, VAS or RPE values, clinical notes or any other "
-    "player-level medical data. Use roles (e.g. 'physio') for people. If an example "
-    "helps, make it fictional. Medical data needs and access rules come later, in Phase 4."
+    "player-level medical data. Staff names and positions are welcome; player names "
+    "are not. If an example helps, make it fictional. Medical data needs and access rules come later, in Phase 4."
 )
 
 _PATTERNS = [
