@@ -153,22 +153,56 @@ player data.
 The two committed `samples/exports/SAMPLE_*.xlsx` files show the export
 format. Other exports are gitignored.
 
-## 7. Deployment notes (not deployed yet)
+## 7. Deployment (Render + Google Sheets, no email)
 
-Review the app locally before you deploy. When ready:
+Chosen setup: **Google Sheets** storage (free, durable, same service account
+as the Doctor Input app), Render **free** web service, **email off**. The
+doctor tells Álvaro when the form is submitted, and answers are read from
+the Sheet or downloaded as XLSX from the app's sidebar.
 
-1. In Render, create a **Postgres** database and a **Web Service** from
-   this repository. `render.yaml` is a reviewed blueprint for both. It is
-   not applied unless you choose *New → Blueprint*.
-2. Build: `pip install -r requirements.txt`.
+**A. Google Sheet**
+
+1. Create a new, blank Google Sheet, e.g. *Daily Report Discovery - Responses*.
+   Use a separate file, not the Doctor Input sheet.
+2. Share it as **Editor** with the service account
+   `medical-workflow@alwasl-503211.iam.gserviceaccount.com`.
+3. Copy the Sheet ID from the URL (`/spreadsheets/d/<SHEET_ID>/edit`).
+4. The app creates the `AUDIT SUBMISSIONS` worksheet and its header row on
+   first start. `sheet_template/AUDIT_SUBMISSIONS_headers.csv` holds the same
+   headers if you prefer to import them by hand.
+
+**B. Render web service** (or *New → Blueprint* with `render.yaml`)
+
+1. *New → Web Service* → connect `alvarolopez8810/alwaslcuestionariodoctor`, branch `main`.
+2. Runtime *Python*, plan *Free*.
+   Build: `pip install -r requirements.txt`.
    Start: `streamlit run app.py --server.port $PORT --server.address 0.0.0.0`.
-3. In *Environment*, set `AUDIT_APP_PASSWORD` (strong, shared only with
-   the doctor and reviewers), `AUDIT_DATABASE_URL` (Render's *Internal*
-   connection string), and the SMTP variables if you want email.
-4. Without `AUDIT_APP_PASSWORD` the hosted app stays locked, and without
-   durable storage it refuses to save. Neither failure is silent.
-5. After deploy, run one fictional test submission and confirm the row in
-   the database and the email.
+3. Environment variables:
+
+| Key | Value |
+|---|---|
+| `PYTHON_VERSION` | `3.12.7` |
+| `AUDIT_APP_PASSWORD` | a strong password, shared only with the doctor and reviewers |
+| `AUDIT_STORAGE_BACKEND` | `sheets` |
+| `AUDIT_SHEET_ID` | the Sheet ID from step A3 |
+| `GOOGLE_SHEETS_CREDENTIALS_JSON` | the same value as in the Doctor Input Render service (the full service-account JSON) |
+
+   Leave all `SMTP_*` / `AUDIT_EMAIL_TO` unset: email stays off and the UI
+   does not mention it.
+4. After the first deploy, open the URL, sign in, send one test submission
+   and check the new row in the Sheet.
+
+**Notes**
+
+- On the free plan the service sleeps after ~15 minutes idle. The first
+  visit after that takes about 30-60 seconds to load. Answers are not
+  affected, because they live in the Sheet.
+- The Sheet stores answers as JSON in `payload_json` (one row per
+  submission revision). For reading, use the XLSX download in the app's
+  sidebar.
+- **Phone use:** turn on *Phone layout* at the top of the form. The two
+  tables then become simple cards (one field per line, *Add item* /
+  *Remove this item*). Answers are kept when switching layouts.
 
 Security notes:
 
@@ -195,4 +229,5 @@ samples/                Fictional test submissions + sample XLSX
 scripts/load_samples.py Load samples / build sample exports
 tests/                  pytest suite
 render.yaml             Render blueprint (not applied automatically)
+sheet_template/         Header row for the Google Sheet (optional manual import)
 ```

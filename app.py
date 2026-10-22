@@ -8,6 +8,7 @@ Run locally:  streamlit run app.py
 """
 
 import json
+import uuid
 
 import pandas as pd
 import streamlit as st
@@ -29,6 +30,13 @@ st.markdown(
       .audit-sub {color:#6b6b63; margin-top:0.1rem;}
       .privacy {border-left:5px solid #DAB344; background:#FBF6E6; padding:0.9rem 1.1rem;
                 border-radius:6px; margin:0.6rem 0 1.2rem 0; color:#2b2b2b;}
+      @media (max-width: 640px) {
+        .block-container {padding: 3.75rem 0.9rem 2rem 0.9rem;}
+        .audit-title {font-size: 1.3rem;}
+        .audit-sub {font-size: 0.9rem;}
+        .privacy {padding: 0.7rem 0.8rem; font-size: 0.92rem;}
+        div[data-testid="stExpander"] summary p {font-size: 1rem;}
+      }
     </style>
     """,
     unsafe_allow_html=True,
@@ -81,7 +89,9 @@ def _reset_form(answers: dict | None = None, submission_id: str | None = None):
             for k, _, _, _ in TABLES[qid]["columns"]:
                 if k not in df.columns:
                     df[k] = None
-            st.session_state[f"tbl_{qid}"] = df[[k for k, _, _, _ in TABLES[qid]["columns"]]]
+            df = df[[k for k, _, _, _ in TABLES[qid]["columns"]]]
+            st.session_state[f"tbl_{qid}"] = df
+            st.session_state[f"cards_{qid}"] = _to_cards(_clean_records(df))
         elif val in (None, "", {}, []):
             continue
         elif t == "radio":
@@ -93,13 +103,11 @@ def _reset_form(answers: dict | None = None, submission_id: str | None = None):
             st.session_state[f"q_{qid}_other"] = val.get("other", "")
         else:
             st.session_state[f"q_{qid}"] = val
+    for k in [k for k in st.session_state if str(k).startswith("card_")]:
+        del st.session_state[k]
     st.session_state["editor_version"] = st.session_state.get("editor_version", 0) + 1
     st.session_state["editing_submission_id"] = submission_id
     st.session_state.pop("last_result", None)
-
-
-if "editor_version" not in st.session_state:
-    _reset_form()
 
 
 def _clean_records(df: pd.DataFrame) -> list[dict]:
@@ -108,6 +116,34 @@ def _clean_records(df: pd.DataFrame) -> list[dict]:
         out.append({k: ("" if v is None or (isinstance(v, float) and pd.isna(v)) else str(v).strip())
                     for k, v in rec.items()})
     return out
+
+
+def _to_cards(rows: list[dict]) -> list[dict]:
+    """Phone-layout rows carry a stable id so widget keys survive removals."""
+    return [dict(r, _uid=uuid.uuid4().hex[:8]) for r in rows]
+
+
+def _table_ids() -> list[str]:
+    return [q["id"] for _, q in iter_questions() if q["type"] == "table"]
+
+
+def _switch_layout():
+    """Carry table rows across when toggling between table and phone layouts."""
+    for qid in _table_ids():
+        keys = [k for k, _, _, _ in TABLES[qid]["columns"]]
+        rows = st.session_state.get(f"tbl_{qid}_out") or []
+        if st.session_state.get("phone_mode"):
+            st.session_state[f"cards_{qid}"] = _to_cards(rows or [{k: "" for k in keys}])
+        else:
+            st.session_state[f"tbl_{qid}"] = (pd.DataFrame(rows, columns=keys).replace("", None)
+                                              if rows else _empty_table(qid))
+    for k in [k for k in st.session_state if str(k).startswith("card_")]:
+        del st.session_state[k]
+    st.session_state["editor_version"] += 1
+
+
+if "editor_version" not in st.session_state:
+    _reset_form()
 
 
 def collect_answers() -> dict:
@@ -131,7 +167,40 @@ def collect_answers() -> dict:
 # Widgets
 # --------------------------------------------------------------------------
 
+def render_cards(qid: str):
+    """Phone layout: one bordered card per row, fields stacked vertically."""
+    spec = TABLES[qid]
+    keys = [k for k, _, _, _ in spec["columns"]]
+    rows = st.session_state[f"cards_{qid}"]
+    for i, row in enumerate(rows):
+        with st.container(border=True):
+            st.markdown(f"**Item {i + 1}**")
+            for key, label, kind, options in spec["columns"]:
+                wkey = f"card_{qid}_{row['_uid']}_{key}"
+                if wkey not in st.session_state:
+                    v = row.get(key) or None
+                    st.session_state[wkey] = (v if v in options else None) if kind == "select" else (v or "")
+                if kind == "select":
+                    st.selectbox(label, options, key=wkey, placeholder="Choose")
+                elif kind == "fixed":
+                    st.markdown(f"*{row.get(key)}*")
+                else:
+                    st.text_input(label, key=wkey)
+                row[key] = st.session_state.get(wkey)
+            if st.button("Remove this item", key=f"rm_{qid}_{row['_uid']}"):
+                rows.pop(i)
+                st.rerun()
+    if st.button("➕ Add item", key=f"add_{qid}"):
+        rows.append({"_uid": uuid.uuid4().hex[:8]})
+        st.rerun()
+    st.session_state[f"tbl_{qid}_out"] = _clean_records(
+        pd.DataFrame([{k: r.get(k) for k in keys} for r in rows], columns=keys))
+
+
 def render_table(qid: str):
+    if st.session_state.get("phone_mode"):
+        render_cards(qid)
+        return
     spec = TABLES[qid]
     config = {}
     for key, label, kind, options in spec["columns"]:
@@ -189,12 +258,8 @@ with st.sidebar:
         st.error(f"Storage not available: {storage_error}")
     else:
         st.success(f"Storage: {storage.describe()}")
-    ok, missing = email_configured()
-    if ok:
-        st.success("Email: configured")
-    else:
-        st.info("Email: not configured (" + ", ".join(missing) + "). "
-                "Submissions are still saved and downloadable.")
+    if email_configured()[0]:
+        st.success("Email: on")
 
     st.markdown("#### Submissions")
     if st.button("Start a new submission", width="stretch"):
@@ -221,7 +286,8 @@ with st.sidebar:
                 st.rerun()
             st.download_button("Download XLSX", build_xlsx(rec, prev_answers),
                                file_name=xlsx_filename(rec), width="stretch")
-            st.caption(f"Email status: {rec.get('email_status') or '-'}")
+            if email_configured()[0]:
+                st.caption(f"Email status: {rec.get('email_status') or '-'}")
     else:
         st.caption("No submissions yet.")
 
@@ -250,6 +316,9 @@ with st.expander("How we will work: 4 short phases"):
     for phase, text in PHASES:
         st.markdown(f"**{phase}.** {text}")
 st.markdown(f'<div class="privacy">🔒 {PRIVACY_NOTICE}</div>', unsafe_allow_html=True)
+st.toggle("📱 Phone layout: fill the tables as simple cards", key="phone_mode",
+          on_change=_switch_layout,
+          help="Recommended on a phone. Your answers are kept when you switch.")
 
 for section in SECTIONS:
     with st.expander(section["title"], expanded=True):
@@ -262,7 +331,7 @@ st.divider()
 st.markdown("### Submit")
 c1, c2 = st.columns(2)
 c1.text_input("Your name (submitter)", key="q_submitter")
-c2.text_input("Your role", key="q_submitter_role")
+c2.text_input("Your position", key="q_submitter_role")
 
 answers = collect_answers()
 findings = scan_answers(answers, LABELS)
@@ -304,13 +373,18 @@ if st.button("Submit questionnaire", type="primary", disabled=bool(blockers)):
         with st.spinner("Saving submission..."):
             record = build_record(storage, submission_id=editing, submitter=submitter,
                                   submitter_role=role, answers=answers)
+            if not email_configured()[0]:
+                record["email_status"] = "off"
             try:
                 storage.save(record)
                 saved, save_error = True, None
             except Exception as exc:  # noqa: BLE001
                 saved, save_error = False, f"{type(exc).__name__}: {exc}"
         xlsx = build_xlsx(record, answers)
-        if saved:
+        if saved and not email_configured()[0]:
+            email_ok, email_status = None, "off"
+            st.session_state["editing_submission_id"] = record["submission_id"]
+        elif saved:
             with st.spinner("Sending email..."):
                 email_ok, email_status = send_xlsx(record, xlsx, xlsx_filename(record))
             try:
@@ -329,11 +403,12 @@ result = st.session_state.get("last_result")
 if result:
     rec = result["record"]
     if result["saved"]:
-        st.success(f"Saved: **{rec['submission_id']}**, revision **{rec['revision']}**, "
-                   f"by {rec['submitter']} at {rec['submitted_at_utc']} (UTC).")
+        st.success(f"Thank you! Saved as **{rec['submission_id']}**, revision "
+                   f"**{rec['revision']}** ({rec['submitted_at_utc'][:16].replace('T', ' ')} UTC). "
+                   "You can download a copy below.")
         if result.get("email_ok"):
             st.success(f"Email {rec['email_status']}.")
-        else:
+        elif result.get("email_ok") is False:
             st.warning(f"Email {rec['email_status']}. The submission is saved; "
                        "use the download button below.")
     elif result.get("save_error"):
