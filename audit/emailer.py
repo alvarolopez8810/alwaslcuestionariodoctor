@@ -35,12 +35,12 @@ def send_xlsx(record: dict, xlsx_bytes: bytes, filename: str) -> tuple[bool, str
     recipients = [a.strip() for a in os.environ["AUDIT_EMAIL_TO"].split(",") if a.strip()]
     sender = os.environ.get("SMTP_FROM") or os.environ["SMTP_USER"]
     msg = EmailMessage()
-    msg["Subject"] = (f"Medical & Performance Process Audit - {record['submission_id']} "
+    msg["Subject"] = (f"Daily Report & Dashboard Discovery - {record['submission_id']} "
                       f"rev {record['revision']}")
     msg["From"] = sender
     msg["To"] = ", ".join(recipients)
     msg.set_content(
-        "A process-audit questionnaire was submitted.\n\n"
+        "A daily report & dashboard discovery form was submitted.\n\n"
         f"Submission ID: {record['submission_id']}\n"
         f"Revision: {record['revision']}\n"
         f"Submitter: {record['submitter']} ({record.get('submitter_role') or '-'})\n"

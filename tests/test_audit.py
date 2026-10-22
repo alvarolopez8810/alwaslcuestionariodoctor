@@ -24,7 +24,7 @@ def test_question_ids_unique_and_tables_defined():
     for _, q in iter_questions():
         if q["type"] == "table":
             assert q["id"] in TABLES
-    assert len(SECTIONS) == 10
+    assert len(SECTIONS) == 9
 
 
 @pytest.mark.parametrize("text", ["VAS 7 after training", "RPE: 8", "hamstring strain", "ACL",
@@ -37,6 +37,11 @@ def test_privacy_flags_player_level_text(text):
                                   "Availability status and expected return window", ""])
 def test_privacy_allows_process_text(text):
     assert not scan_text(text)
+
+
+def test_dashboard_top_limited_to_three():
+    q = next(q for _, q in iter_questions() if q["id"] == "dashboard_top")
+    assert q["max_selections"] == 3
 
 
 def test_samples_are_process_only():
@@ -79,7 +84,7 @@ def test_xlsx_has_two_tabs_and_rows():
     assert inv.max_row == 1 + len(s["answers"]["report_inventory"])
     answers_text = " ".join(str(c.value) for row in wb["Audit Answers"].iter_rows() for c in row)
     assert rec["submission_id"] in answers_text
-    assert "Both, reported separately" in answers_text
+    assert "Doctor's comment and recommendation" in answers_text
 
 
 def test_xlsx_handles_partial_submission():
@@ -88,7 +93,7 @@ def test_xlsx_handles_partial_submission():
                        submitter_role="", answers=s["answers"])
     wb = load_workbook(io.BytesIO(build_xlsx(rec, s["answers"])))
     text = " ".join(str(c.value) for row in wb["Audit Answers"].iter_rows() for c in row)
-    assert "(no answer)" in text and "Other: Whiteboard in the medical room" in text
+    assert "Other: Whiteboard in the medical room" in text
 
 
 def test_email_missing_config_returns_status(monkeypatch):

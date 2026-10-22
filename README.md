@@ -1,44 +1,49 @@
-# Medical & Performance Reporting Workflow Audit
+# Daily Report & Dashboard Discovery
 
-A small Streamlit app for Al Wasl FC. The medical department fills in a
-**process questionnaire**. It records what reports exist, who owns, reviews
-and receives them, how they are defined, checked, stored and shared, and what
-a future daily data-entry workflow needs.
+A short Streamlit form for Al Wasl FC. It is **Phase 1** of improving the
+daily medical/performance report and building a clearer daily dashboard for
+the **doctor, physical coach and coach**. It takes about 10 minutes. It is a
+practical starting conversation, not a compliance audit.
 
-> **Process audit only.** The app does not ask for, and must never store,
-> player names, diagnoses, injury details, VAS/RPE values, clinical notes or
-> any other player-level medical data. The privacy notice sits at the top
-> of the form. A required confirmation checkbox and a text guard block
-> submission until the submitter checks anything that looks player-level,
-> such as "VAS 7" or injury terms. The guard is a safety net and cannot catch
-> everything (player names especially), so the notice stays the primary
-> control.
+| Phase | Goal |
+|---|---|
+| 1 | Understand the current daily report and what each staff group needs (this form) |
+| 2 | Build a visual dashboard prototype from one sample report |
+| 3 | Review it with the doctor, physical coach and coach: what is clear, missing or misleading |
+| 4 | Agree the data-entry workflow, responsibilities, storage and access rules |
+
+> **Process only, never player data.** The form does not ask for, and must
+> never store, player names, diagnoses, injury details, VAS/RPE values,
+> clinical notes or any other player-level medical data. The notice sits at
+> the top of the form. A required confirmation checkbox and a text guard
+> block submission until the submitter checks anything that looks
+> player-level, such as "VAS 7" or injury terms. Medical data needs and access
+> rules are left for Phase 4.
 
 This app is **independent** of the live Doctor Input Dash app
-(`alwasl_workflow`). It shares nothing with it at runtime and does not change it.
+(`alwasl_workflow`). It shares nothing with it at runtime.
 
 ---
 
-## 1. What is in the questionnaire
+## 1. What the form asks
 
 | # | Section | Format |
 |---|---|---|
-| 1 | Report inventory | Repeatable rows: name, type, owner, reviewer, audience, source, format, cadence, cut-off, storage, access level, created/received/updated, notes |
-| 2 | Department roles and deputies | Repeatable rows + cover/handover questions |
-| 3 | Definitions and populations | Roster, attendance, unique players vs attendance events, AM/PM and repeat entries, availability, VAS/RPE definitions, load metrics, source of truth |
-| 4 | Data quality checks and approval | |
-| 5 | File naming, versioning, correction, archive | |
-| 6 | Storage locations and channels | Incl. shared folders, email, WhatsApp, and whether the Doctor Input workbook is still used and what replaced it |
-| 7 | Access boundaries | Audience × access-level matrix, what may go to the sporting director, what stays restricted |
-| 8 | Reporting workload and manual work | |
-| 9 | Future daily data-entry workflow | |
-| 10 | Sign-off | |
+| 1 | Your current reports | Repeatable rows (name, type, owner, reviewer, audience, source, format, cadence, cut-off, storage, access level, notes) |
+| 2 | Roles and deputies | Repeatable rows + cover/handover questions |
+| 3 | Who provides, prepares and reviews the daily report | Choices + two short fields |
+| 4 | Timing | When information is entered / when the report must be ready (choice + optional comment) |
+| 5 | The daily dashboard | Top-of-dashboard items (**max 3**), what the medical comment should communicate, one short need each for doctor / physical coach / coach |
+| 6 | Counts and definitions | Which need to be clearer (attendance, availability, rehab...) |
+| 7 | Storage and sharing | Choices + optional comment |
+| 8 | Biggest improvement | One change |
+| 9 | Prototype feedback | Who should review the first prototype |
 
-Dropdowns are **suggestions only**: nothing is preselected, and every
-choice list has an **Other** route with a free-text field. The whole
-questionnaire is defined in `audit/questions.py`. Edit that one file to
-change wording or options. Answers are keyed by stable question IDs, so
-older submissions still export correctly.
+Options are **suggestions only**: nothing is preselected, and choice lists
+include **Other** with a free-text field. The form is defined in
+`audit/questions.py`. Edit that one file to change wording or options.
+Answers are keyed by stable question IDs, so older submissions still export
+(questions that no longer exist are simply not shown).
 
 ## 2. Run locally
 
@@ -114,9 +119,10 @@ After each submission:
 
 1. The submission is **saved first**.
 2. An XLSX is built with two tabs:
-   - **Report Inventory**: one row per inventory item, with submission ID and revision.
-   - **Audit Answers**: metadata (ID, revision, submitter, UTC timestamp),
-     then every question by section. Unanswered questions show "(no answer)".
+   - **Report Inventory**: one row per report.
+   - **Audit Answers**: submission ID, revision, submitter and UTC time at the
+     top, then one row per question (Section, Question, Answer). Unanswered
+     questions show "-".
 3. The XLSX is emailed to `AUDIT_EMAIL_TO`.
 4. A **Download XLSX** button appears on the page.
 

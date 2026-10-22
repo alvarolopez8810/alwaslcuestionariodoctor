@@ -34,7 +34,7 @@ def answer_to_text(q: dict, value) -> str:
     if t == "radio":
         parts = [value.get("choice") or ""]
         if value.get("detail"):
-            parts.append(f"Detail: {value['detail'].strip()}")
+            parts.append(f"Comment: {value['detail'].strip()}")
         return "\n".join(p for p in parts if p)
     if t == "multi":
         choices = [c for c in value.get("choices", []) if c != OTHER]
@@ -42,10 +42,12 @@ def answer_to_text(q: dict, value) -> str:
             choices.append(f"Other: {value.get('other', '').strip() or '(not specified)'}")
         return "; ".join(choices)
     if t == "table":
+        # Compact: one line per row, non-empty cells only, first column leads.
         cols = TABLES[q["id"]]["columns"]
         lines = []
         for r in _clean_rows(q["id"], value):
-            lines.append(" | ".join(f"{label}: {r.get(k) or '-'}" for k, label, _, _ in cols))
+            first, *rest = [(label, r.get(k)) for k, label, _, _ in cols if r.get(k)]
+            lines.append(first[1] + (": " + "; ".join(f"{l} {v}" for l, v in rest) if rest else ""))
         return "\n".join(lines)
     return str(value)
 
@@ -72,19 +74,18 @@ def build_xlsx(record: dict, answers: dict) -> bytes:
     ws = wb.active
     ws.title = "Report Inventory"
     cols = TABLES["report_inventory"]["columns"]
-    headers = ["Submission ID", "Revision", "Row"] + [label for _, label, _, _ in cols]
+    headers = ["#"] + [label for _, label, _, _ in cols]
     ws.append(headers)
     _style_header(ws, 1, len(headers))
     for i, r in enumerate(_clean_rows("report_inventory", answers.get("report_inventory")), 1):
-        ws.append([record["submission_id"], record["revision"], i]
-                  + [r.get(k) or "" for k, _, _, _ in cols])
-    widths = [20, 9, 6] + [26] * len(cols)
+        ws.append([i] + [r.get(k) or "" for k, _, _, _ in cols])
+    widths = [5] + [22] * len(cols)
     for i, w in enumerate(widths, 1):
         ws.column_dimensions[get_column_letter(i)].width = w
     for row in ws.iter_rows(min_row=2):
         for cell in row:
             cell.alignment = WRAP
-    ws.freeze_panes = "D2"
+    ws.freeze_panes = "C2"
     ws.auto_filter.ref = ws.dimensions
 
     # ---- Tab 2: Audit Answers ---------------------------------------------
@@ -93,8 +94,8 @@ def build_xlsx(record: dict, answers: dict) -> bytes:
         ws.append([k, v])
         ws.cell(row=ws.max_row, column=1).font = Font(bold=True)
     ws.append([])
-    ws.append(["Section", "Question ID", "Question", "Answer"])
-    _style_header(ws, ws.max_row, 4)
+    ws.append(["Section", "Question", "Answer"])
+    _style_header(ws, ws.max_row, 3)
     header_row = ws.max_row
     for section in SECTIONS:
         for q in section["questions"]:
@@ -103,8 +104,8 @@ def build_xlsx(record: dict, answers: dict) -> bytes:
                 text = f"{n} item(s) - see 'Report Inventory' tab"
             else:
                 text = answer_to_text(q, answers.get(q["id"]))
-            ws.append([section["title"], q["id"], q["label"], text or "(no answer)"])
-    for col, w in zip("ABCD", (34, 22, 60, 80)):
+            ws.append([section["title"], q["label"], text or "-"])
+    for col, w in zip("ABC", (30, 55, 80)):
         ws.column_dimensions[col].width = w
     for row in ws.iter_rows(min_row=header_row + 1):
         for cell in row:

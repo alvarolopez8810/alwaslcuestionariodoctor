@@ -16,10 +16,10 @@ from audit import auth
 from audit.emailer import email_configured, send_xlsx
 from audit.export import build_xlsx, xlsx_filename
 from audit.privacy import PRIVACY_NOTICE, scan_answers
-from audit.questions import OTHER, SECTIONS, TABLES, iter_questions
+from audit.questions import OTHER, PHASES, SECTIONS, TABLES, iter_questions
 from audit.storage import StorageError, build_record, get_storage
 
-st.set_page_config(page_title="Process Audit · Al Wasl FC", page_icon="📋", layout="wide")
+st.set_page_config(page_title="Daily Report Discovery · Al Wasl FC", page_icon="📋", layout="wide")
 
 st.markdown(
     """
@@ -172,8 +172,9 @@ def render_question(q: dict):
         if q.get("detail"):
             st.text_area(q["detail"], key=f"{key}_detail", height=70)
     elif t == "multi":
-        st.multiselect(label, q["options"], key=key,
-                       placeholder="Choose any that apply (suggestions only)")
+        limit = q.get("max_selections")
+        st.multiselect(label, q["options"], key=key, max_selections=limit,
+                       placeholder=f"Choose up to {limit}" if limit else "Choose any that apply")
         if OTHER in st.session_state.get(key, []):
             st.text_input("Other: please specify", key=f"{key}_other")
 
@@ -229,10 +230,9 @@ with st.sidebar:
 # Main form
 # --------------------------------------------------------------------------
 
-st.markdown('<p class="audit-title">Medical & Performance Reporting Workflow Audit</p>'
-            '<p class="audit-sub">Al Wasl FC · process questionnaire for the medical department</p>',
+st.markdown('<p class="audit-title">Daily Report & Dashboard: Getting Started</p>'
+            '<p class="audit-sub">Al Wasl FC · medical & performance staff</p>',
             unsafe_allow_html=True)
-st.markdown(f'<div class="privacy">🔒 {PRIVACY_NOTICE}</div>', unsafe_allow_html=True)
 
 editing = st.session_state.get("editing_submission_id")
 if editing:
@@ -240,15 +240,21 @@ if editing:
             "revisions are kept unchanged.")
 
 st.markdown(
-    "This questionnaire documents how reports are produced, checked, stored and shared. "
-    "Answer in plain English. Dropdown options are suggestions only; choose **Other** "
-    "and explain whenever they do not fit. Leave anything you do not know blank and "
-    "say who would know."
+    "We want to make the daily medical/performance report quicker to produce and "
+    "easier to use, and to build a clear daily dashboard for the **doctor, physical "
+    "coach and coach**. Your experience is the starting point. This form takes about "
+    "**10 minutes**. Short answers are perfect, and anything you are unsure about can "
+    "be left blank. We will go through it together afterwards."
 )
+with st.expander("How we will work: 4 short phases"):
+    for phase, text in PHASES:
+        st.markdown(f"**{phase}.** {text}")
+st.markdown(f'<div class="privacy">🔒 {PRIVACY_NOTICE}</div>', unsafe_allow_html=True)
 
 for section in SECTIONS:
-    with st.expander(section["title"], expanded=section["id"] == "s1"):
-        st.caption(section["intro"])
+    with st.expander(section["title"], expanded=True):
+        if section["intro"]:
+            st.caption(section["intro"])
         for q in section["questions"]:
             render_question(q)
 

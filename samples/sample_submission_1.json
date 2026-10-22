@@ -4,79 +4,182 @@
   "submitter_role": "Team Doctor (test)",
   "answers": {
     "report_inventory": [
-      {"report_name": "Daily Availability", "report_type": "Daily availability report", "owner": "Team Doctor", "reviewer": "Head Physiotherapist", "audience": "Head coach, sporting director", "source": "Doctor Input app / Google Sheet", "format": "PDF", "cadence": "Daily", "deadline": "09:30 on training days", "storage": "Medical shared drive / Daily", "access_level": "Medical + coaching staff", "direction": "Created", "notes": ""},
-      {"report_name": "Training Load Summary", "report_type": "Training load / GPS report", "owner": "Sports Scientist", "reviewer": "Head of Performance", "audience": "Coaching staff", "source": "GPS / tracking system", "format": "XLSX / XLSM", "cadence": "Per session", "deadline": "2 h after session", "storage": "Performance shared drive", "access_level": "Medical + performance staff", "direction": "Created", "notes": ""},
-      {"report_name": "Wellness Morning Summary", "report_type": "Wellness / readiness questionnaire summary", "owner": "Sports Scientist", "reviewer": "Team Doctor", "audience": "Medical + performance staff", "source": "Wellness / RPE app", "format": "Web dashboard", "cadence": "Daily", "deadline": "08:45", "storage": "Vendor platform", "access_level": "Medical + performance staff", "direction": "Received", "notes": ""},
-      {"report_name": "Doctor Input workbook", "report_type": "Doctor Input workbook", "owner": "Team Doctor", "reviewer": "", "audience": "Medical staff", "source": "Manual entry (Excel)", "format": "XLSX / XLSM", "cadence": "Daily", "deadline": "End of day", "storage": "Doctor's laptop", "access_level": "Medical staff only", "direction": "Updated", "notes": "Being phased out (fictional example)"},
-      {"report_name": "Weekly Medical Summary", "report_type": "Weekly medical summary", "owner": "Team Doctor", "reviewer": "Head of Medical", "audience": "Sporting director", "source": "Manual entry (Excel)", "format": "PDF", "cadence": "Weekly", "deadline": "Sunday 18:00", "storage": "Email only", "access_level": "Shared with sporting director", "direction": "Created", "notes": "No approved archive location yet"}
+      {
+        "report_name": "Daily Availability",
+        "report_type": "Daily availability report",
+        "owner": "Team Doctor",
+        "reviewer": "Head Physiotherapist",
+        "audience": "Head coach, sporting director",
+        "source": "Doctor Input app / Google Sheet",
+        "format": "PDF",
+        "cadence": "Daily",
+        "deadline": "09:30 on training days",
+        "storage": "Medical shared drive / Daily",
+        "access_level": "Medical + coaching staff",
+        "direction": "Created",
+        "notes": ""
+      },
+      {
+        "report_name": "Training Load Summary",
+        "report_type": "Training load / GPS report",
+        "owner": "Sports Scientist",
+        "reviewer": "Head of Performance",
+        "audience": "Coaching staff",
+        "source": "GPS / tracking system",
+        "format": "XLSX / XLSM",
+        "cadence": "Per session",
+        "deadline": "2 h after session",
+        "storage": "Performance shared drive",
+        "access_level": "Medical + performance staff",
+        "direction": "Created",
+        "notes": ""
+      },
+      {
+        "report_name": "Wellness Morning Summary",
+        "report_type": "Wellness / readiness questionnaire summary",
+        "owner": "Sports Scientist",
+        "reviewer": "Team Doctor",
+        "audience": "Medical + performance staff",
+        "source": "Wellness / RPE app",
+        "format": "Web dashboard",
+        "cadence": "Daily",
+        "deadline": "08:45",
+        "storage": "Vendor platform",
+        "access_level": "Medical + performance staff",
+        "direction": "Received",
+        "notes": ""
+      },
+      {
+        "report_name": "Doctor Input workbook",
+        "report_type": "Doctor Input workbook",
+        "owner": "Team Doctor",
+        "reviewer": "",
+        "audience": "Medical staff",
+        "source": "Manual entry (Excel)",
+        "format": "XLSX / XLSM",
+        "cadence": "Daily",
+        "deadline": "End of day",
+        "storage": "Doctor's laptop",
+        "access_level": "Medical staff only",
+        "direction": "Updated",
+        "notes": "Being phased out (fictional example)"
+      },
+      {
+        "report_name": "Weekly Medical Summary",
+        "report_type": "Weekly medical summary",
+        "owner": "Team Doctor",
+        "reviewer": "Head of Medical",
+        "audience": "Sporting director",
+        "source": "Manual entry (Excel)",
+        "format": "PDF",
+        "cadence": "Weekly",
+        "deadline": "Sunday 18:00",
+        "storage": "Email only",
+        "access_level": "Shared with sporting director",
+        "direction": "Created",
+        "notes": "No approved archive location yet"
+      }
     ],
     "inventory_missing": "Imaging files are received from the external provider; the admin team knows the transfer process.",
     "roles": [
-      {"role": "Head of Medical / Team Doctor", "person": "Team Doctor", "deputy": "Senior Physiotherapist", "responsibilities": "Availability status, weekly summary", "notes": ""},
-      {"role": "Sports scientist", "person": "Sports Scientist", "deputy": "S&C Coach", "responsibilities": "GPS, wellness, RPE reports", "notes": ""},
-      {"role": "Performance / data analyst", "person": "Data Analyst", "deputy": "", "responsibilities": "Dashboards and archive", "notes": "No deputy defined"}
+      {
+        "role": "Head of Medical / Team Doctor",
+        "person": "Team Doctor",
+        "deputy": "Senior Physiotherapist",
+        "responsibilities": "Availability status, weekly summary",
+        "notes": ""
+      },
+      {
+        "role": "Sports scientist",
+        "person": "Sports Scientist",
+        "deputy": "S&C Coach",
+        "responsibilities": "GPS, wellness, RPE reports",
+        "notes": ""
+      },
+      {
+        "role": "Performance / data analyst",
+        "person": "Data Analyst",
+        "deputy": "",
+        "responsibilities": "Dashboards and archive",
+        "notes": "No deputy defined"
+      }
     ],
     "cover_gap": "Not defined. Usually the head coach is told verbally.",
     "handover": "WhatsApp message to the deputy, no written template.",
-    "roster_population": {"choices": ["First-team registered players", "Youth players training with first team", "Long-term injured players"], "other": ""},
-    "roster_definition": "First-team list from the team manager, updated after each registration window and when youth players are called up for the week.",
-    "attendance_definition": "Present at the start of the session in kit, even if only partial participation.",
-    "unique_vs_events": {"choice": "Both, reported separately", "detail": "Daily report shows unique players; monthly report counts player-sessions. Fictional example: 25 unique players, 44 player-sessions on a double day."},
-    "ampm_counting": {"choice": "Depends on the report", "detail": "GPS report counts per session; availability report counts per day."},
-    "repeat_entries": "Last entry before cut-off wins; earlier entry is overwritten without a record.",
-    "availability_categories": {"choices": ["Available", "Available with restrictions / modified training", "Individual / rehab training", "Unavailable"], "other": ""},
-    "availability_definition": "Team Doctor decides by 09:00. Modified = trains with the group with restrictions agreed with the physio.",
-    "vas_definition": "VAS 0-10 scale, asked by the physio before treatment. Definition is not written down anywhere.",
-    "rpe_scale": {"choice": "CR-10 (0-10)", "detail": "Collected 30 minutes after the session in the app. sRPE = RPE x session minutes."},
-    "load_metrics": {"choices": ["Total distance", "High-speed running", "Sprint distance", "Accelerations / decelerations", "Session-RPE load"], "other": ""},
-    "load_definitions": "Speed bands set by the vendor default; not documented by the club.",
-    "source_of_truth": "Not agreed. GPS is used for load, attendance sheet for availability.",
-    "qc_checks": {"choices": ["Missing entries", "Duplicate entries"], "other": ""},
-    "qc_who_when": "Sports scientist, before 09:15.",
-    "approval_required": {"choice": "Only some reports", "detail": "Weekly summary approved by the Head of Medical."},
-    "qc_recorded": "Not recorded.",
-    "qc_error_flow": "Message to the report owner on WhatsApp.",
-    "naming_convention": "Mixed. Example: DailyAvailability_21Oct.pdf",
-    "versioning_method": {"choices": ["Date in file name", "Overwrite the same file"], "other": ""},
-    "correction_process": "Corrected file re-sent with 'UPDATED' in the subject. Changes are not listed.",
-    "archive_rules": "No formal archive or retention period.",
-    "channels": {"choices": ["Google Drive", "Email", "WhatsApp (groups)", "Local laptop / USB"], "other": ""},
-    "approved_storage": "Not formally approved. Medical shared drive is the de facto store.",
-    "whatsapp_use": {"choice": "Sometimes", "detail": "Daily availability status shared in the staff group."},
-    "channels_to_stop": "Local laptop storage and WhatsApp groups for status updates.",
-    "doctor_input_status": {"choice": "No, it was replaced", "detail": "Replaced by the Doctor Input web app in July 2026 (fictional example); old workbook kept on laptop."},
-    "access_matrix": [
-      {"audience": "Medical staff", "access": "Full clinical detail", "channel": "Medical drive", "notes": ""},
-      {"audience": "Performance / S&C staff", "access": "Availability status + expected return", "channel": "Daily report", "notes": ""},
-      {"audience": "Head coach", "access": "Availability status + expected return", "channel": "Daily report", "notes": ""},
-      {"audience": "Assistant coaches / analysts", "access": "Availability status only", "channel": "Daily report", "notes": ""},
-      {"audience": "Sporting director", "access": "Availability status + expected return", "channel": "Weekly summary email", "notes": ""},
-      {"audience": "Club management / CEO", "access": "Team-level aggregates only", "channel": "Monthly", "notes": ""},
-      {"audience": "Team manager / administration", "access": "Availability status only", "channel": "", "notes": ""},
-      {"audience": "External (league, federation, insurer)", "access": "Not defined", "channel": "", "notes": "Handled case by case"}
-    ],
-    "sd_shareable": "Availability status, expected return window and team-level counts.",
-    "restricted_info": "Clinical notes, imaging, treatment details.",
-    "access_exceptions": "Head of Medical approves by email; not logged centrally.",
-    "access_review": "No scheduled review.",
-    "hours_per_week": 14,
-    "repeated_tasks": "Re-typing availability from the app into the weekly PDF; reformatting GPS exports.",
-    "double_entry": "Availability entered in the app and again in the weekly Excel.",
-    "pain_points": "1) Double entry. 2) No single archive. 3) Unclear definitions for AM/PM counting.",
-    "automation_candidates": "Weekly summary and monthly attendance counts.",
-    "future_who": "Physio enters, Team Doctor reviews.",
-    "future_cutoff": "09:00 on training days",
-    "future_devices": {"choices": ["Tablet", "Mobile phone"], "other": ""},
-    "future_languages": {"choices": ["English", "Portuguese"], "other": ""},
-    "future_fields": "Availability category, training participation, expected return window, comment field (restricted).",
-    "future_outputs": "Daily availability PDF for the coach by 09:30; weekly summary for the sporting director.",
-    "future_alerts": "Reminder at 08:45 if entries are missing.",
-    "future_integrations": "GPS export and the wellness app.",
-    "future_must_not": "Must not share clinical notes outside medical staff.",
-    "signoff_owner": "Head of Medical (fictional)",
-    "signoff_reviewers": "Head of Performance; Head of Football Intelligence",
-    "signoff_target": "2026-11-15",
-    "review_frequency": {"choice": "Each season", "detail": ""},
-    "final_comments": "Test submission 1 - fictional."
+    "info_providers": {
+      "choices": [
+        "Doctor",
+        "Physiotherapists",
+        "Sports scientist",
+        "Players (via wellness app)"
+      ],
+      "other": ""
+    },
+    "report_preparer": "Sports scientist",
+    "report_reviewer": "Team Doctor",
+    "entry_time": {
+      "choice": "Before the morning session",
+      "detail": "Physio updates by 08:45."
+    },
+    "ready_time": {
+      "choice": "Before the staff / coaches' meeting",
+      "detail": "Around 09:30."
+    },
+    "dashboard_top": {
+      "choices": [
+        "Player availability",
+        "Doctor's comment and recommendation",
+        "Training modifications"
+      ],
+      "other": ""
+    },
+    "medical_comment": {
+      "choices": [
+        "What happened",
+        "What action is recommended",
+        "Who should act",
+        "By when"
+      ],
+      "other": ""
+    },
+    "medical_comment_note": "Two lines maximum, action first.",
+    "needs_doctor": "Who still has no update today and which follow-ups are due.",
+    "needs_physical_coach": "Who trains modified and the load limits agreed with medical.",
+    "needs_coach": "Who is available for full training and who is doubtful for the next match.",
+    "definitions_needed": {
+      "choices": [
+        "Attendance",
+        "Availability",
+        "AM/PM or repeat entries"
+      ],
+      "other": ""
+    },
+    "definitions_note": "Attendance is counted per session in one report and per day in another.",
+    "storage": {
+      "choices": [
+        "Google Drive",
+        "Email",
+        "WhatsApp"
+      ],
+      "other": ""
+    },
+    "sharing": {
+      "choices": [
+        "Email",
+        "WhatsApp"
+      ],
+      "other": ""
+    },
+    "storage_note": "No single agreed folder yet.",
+    "one_change": "Enter availability once and have the daily PDF and the weekly summary built from it.",
+    "prototype_reviewers": {
+      "choices": [
+        "Doctor",
+        "Physical coach",
+        "Head coach"
+      ],
+      "other": ""
+    },
+    "prototype_note": "After training on a non-match day. Test submission 1 - fictional."
   }
 }

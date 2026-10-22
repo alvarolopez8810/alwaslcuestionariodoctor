@@ -39,7 +39,7 @@ def require_login() -> None:
     if st.session_state.get("authenticated"):
         return
 
-    st.markdown("### Al Wasl FC · Medical & Performance Process Audit")
+    st.markdown("### Al Wasl FC · Daily Report & Dashboard Discovery")
     with st.form("login"):
         pw = st.text_input("Access password", type="password")
         if st.form_submit_button("Sign in"):

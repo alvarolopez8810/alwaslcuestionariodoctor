@@ -11,11 +11,10 @@ or confirms it describes a process, not a player.
 import re
 
 PRIVACY_NOTICE = (
-    "**Process audit only.** Do not enter player names, diagnoses, injury details, "
-    "VAS or RPE values, clinical notes or any other player-level medical data. "
-    "Describe *how* the department works, not *who* or *what* happened. "
-    "Use roles or staff names for people, never player names. "
-    "If you need an example, make it fictional."
+    "**About how we work, not about players.** Please do not enter player names, "
+    "diagnoses, injury details, VAS or RPE values, clinical notes or any other "
+    "player-level medical data. Use roles (e.g. 'physio') for people. If an example "
+    "helps, make it fictional. Medical data needs and access rules come later, in Phase 4."
 )
 
 _PATTERNS = [
